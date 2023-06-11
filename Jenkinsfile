@@ -18,7 +18,7 @@ pipeline {
                             '''
                         }
                     } else {
-                        echo "user chose ${BRANCH_NAME}"
+                        echo "user chose ${params.BRANCH_NAME}"
                     }
                 }
             }
@@ -27,19 +27,19 @@ pipeline {
             steps {
                 echo 'deploy'
                 script {
-                    // if (BRANCH_NAME == "dev" || BRANCH_NAME == "test" || BRANCH_NAME == "prod") {
-                    //     withCredentials([file(credentialsId: 'iti-sys-admin-mnf-kubeconfig-cred', variable: 'KUBECONFIG_ITI')]) {
-                    //         sh '''
-                    //             #export BUILD_NUMBER=$(cat ../build_num.txt)
-                    //             mv Deployment/deploy.yaml Deployment/deploy.yaml.tmp
-                    //             cat Deployment/deploy.yaml.tmp | envsubst > Deployment/deploy.yaml
-                    //             rm -rf Deployment/deploy.yaml.tmp
-                    //             kubectl apply -f Deployment --kubeconfig ${KUBECONFIG_ITI} -n ${ENV_ITI}
-                    //         '''
-                    //     }
-                    // } else {
-                    //     echo "user chose ${BRANCH_NAME}"
-                    // }
+                    if (BRANCH_NAME == "dev" || BRANCH_NAME == "test" || BRANCH_NAME == "prod") {
+                        withCredentials([file(credentialsId: 'kube-config', variable: 'KUBECONFIG_ITI')]) {
+                            sh '''
+                                #export BUILD_NUMBER=$(cat ../build_num.txt)
+                                mv Deployment/deploy.yaml Deployment/deploy.yaml.tmp
+                                cat Deployment/deploy.yaml.tmp | envsubst > Deployment/deploy.yaml
+                                rm -rf Deployment/deploy.yaml.tmp
+                                kubectl apply -f Deployment --kubeconfig ${KUBECONFIG_ITI} -n ${BRANCH_NAME}
+                            '''
+                        }
+                    } else {
+                        echo "user chose ${params.BRANCH_NAME}"
+                    }
                     echo "it works"
                 }
             }
