@@ -30,7 +30,7 @@ pipeline {
                     if (BRANCH_NAME == "dev" || BRANCH_NAME == "test" || BRANCH_NAME == "prod") {
                         withCredentials([file(credentialsId: 'kube-config', variable: 'KUBECONFIG_ITI')]) {
                             sh '''
-                                #export BUILD_NUMBER=$(cat ../build_num.txt)
+                                export BUILD_NUMBER=$(cat ../build_num.txt)
                                 mv Deployment/deploy.yaml Deployment/deploy.yaml.tmp
                                 cat Deployment/deploy.yaml.tmp | envsubst > Deployment/deploy.yaml
                                 rm -rf Deployment/deploy.yaml.tmp
