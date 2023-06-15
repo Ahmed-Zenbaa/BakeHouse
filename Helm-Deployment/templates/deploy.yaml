@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: {{ .Values.metadata.name }}
+    type: {{ .Values.metadata.type }}
   name: {{ .Values.metadata.name }}
 spec:
   replicas: {{ .Values.replicaCount}}
@@ -13,6 +14,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.metadata.name }}
+        type: {{ .Values.metadata.type }}
     spec:
       containers:
       - image: {{ .Values.metadata.myName }}/{{ .Values.metadata.name }}{{ .Values.metadata.track }}:v${BUILD_NUMBER}
