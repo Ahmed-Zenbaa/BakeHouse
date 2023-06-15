@@ -31,10 +31,11 @@ pipeline {
                         withCredentials([file(credentialsId: 'kube-config', variable: 'KUBECONFIG_ITI')]) {
                             sh '''
                                 export BUILD_NUMBER=$(cat ../build_num.txt)
-                                mv Deployment/deploy.yaml Deployment/deploy.yaml.tmp
-                                cat Deployment/deploy.yaml.tmp | envsubst > Deployment/deploy.yaml
-                                rm -rf Deployment/deploy.yaml.tmp
-                                kubectl apply -f Deployment --kubeconfig ${KUBECONFIG_ITI} -n ${BRANCH_NAME}
+                                mv Helm-Deployment/templates/deploy.yaml Helm-Deployment/templates/deploy.yaml.tmp
+                                cat Helm-Deployment/templates/deploy.yaml.tmp | envsubst > Helm-Deployment/templates/deploy.yaml
+                                rm -rf Helm-Deployment/templates/deploy.yaml.tmp
+                                #kubectl apply -f Deployment --kubeconfig ${KUBECONFIG_ITI} -n ${BRANCH_NAME}
+                                helm upgrade --install my-bakehouse ./Helm-Deployment --kubeconfig ${KUBECONFIG_ITI} -n ${BRANCH_NAME}
                             '''
                         }
                     } else {
