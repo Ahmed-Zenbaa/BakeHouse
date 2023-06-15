@@ -11,7 +11,7 @@ spec:
     protocol: {{ .Values.metadata.protocol }}
     targetPort: {{ .Values.service.port }}
   selector:
-    app: {{ .Release.Name }}-{{ .Values.metadata.name }}
+    app: {{ .Values.metadata.name }}
   type: {{ .Values.metadata.portType }}
 status:
   loadBalancer: {}
