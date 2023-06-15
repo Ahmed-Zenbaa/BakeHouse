@@ -12,6 +12,7 @@ spec:
     targetPort: {{ .Values.service.port }}
   selector:
     app: {{ .Values.metadata.name }}
+    type: {{ .Values.metadata.type }}
   type: {{ .Values.metadata.portType }}
 status:
   loadBalancer: {}
